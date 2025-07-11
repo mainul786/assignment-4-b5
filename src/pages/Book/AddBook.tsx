@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { useForm, type SubmitHandler } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -26,17 +26,11 @@ export const AddBook = () => {
   const notify = () => toast.success("Book Added succefully!");
   const [addBook, { isLoading }] = useAddBookMutation();
   const navigate = useNavigate();
-  const form = useForm({
+  const form = useForm<TBook>({
     defaultValues: {
       title: "",
       author: "",
-      genre:
-        "FICTION" |
-        "NON_FICTION" |
-        "SCIENCE" |
-        "HISTORY" |
-        "BIOGRAPHY" |
-        "FANTASY",
+      genre: "FICTION",
       isbn: "",
       description: "",
       copies: 1,
@@ -44,7 +38,7 @@ export const AddBook = () => {
     },
   });
 
-  const onSubmit = async (data: TBook) => {
+  const onSubmit: SubmitHandler<TBook> = async (data: TBook) => {
     await addBook(data).unwrap();
     // console.log(res);
     navigate("/books");

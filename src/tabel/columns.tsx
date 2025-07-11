@@ -1,17 +1,5 @@
+import type { TBook } from "@/types/book.types";
 import { type ColumnDef } from "@tanstack/react-table";
-
-export type TBook = {
-  _id: string;
-  title: string;
-  author: string;
-  genre: string;
-  isbn: string;
-  description: string;
-  copies: number;
-  available: boolean;
-  createdAt: string;
-  updatedAt: string;
-};
 
 export const getUserColumns = (
   handleEdit: (book: TBook) => void,

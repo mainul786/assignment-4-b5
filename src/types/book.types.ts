@@ -1,5 +1,5 @@
 export type TBook = {
-  _id?: string;
+  _id: string;
   title: string;
   author: string;
   genre:
@@ -14,3 +14,6 @@ export type TBook = {
   copies: number;
   available: boolean;
 };
+
+export type TBookFormInput = Omit<TBook, "_id" | "createdAt" | "updatedAt">;
+export type TBookForm = Omit<TBook, "_id" | "createdAt" | "updatedAt">;

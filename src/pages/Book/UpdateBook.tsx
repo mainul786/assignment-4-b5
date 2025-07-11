@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/select";
 import { useGetBooksQuery, useUpdateBookMutation } from "@/redux/api/bookApi";
 import { useNavigate, useParams } from "react-router";
-import { useForm } from "react-hook-form";
+import { useForm, type SubmitHandler } from "react-hook-form";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 
@@ -31,8 +31,8 @@ export const UpdateBook = () => {
   const [updateBook, { isLoading }] = useUpdateBookMutation();
   const currentBook = data?.data?.find((book: TBook) => book._id == id);
 
-  const form = useForm();
-
+  type TBookForm = Omit<TBook, "_id">;
+  const form = useForm<TBookForm>();
   useEffect(() => {
     if (currentBook) {
       form.reset({
@@ -47,17 +47,20 @@ export const UpdateBook = () => {
     }
   }, [currentBook, form]);
 
-  const onSubmit = async (data: TBook) => {
+  const onSubmit: SubmitHandler<TBookForm> = async (data) => {
+    if (!id) return;
     if (data.copies === 0) {
-      return <p>Book is unavailable.</p>;
+      toast.error("Book is unavailable");
+      return;
     }
     await updateBook({ _id: id, ...data }).unwrap();
+
     refetch();
     navigate("/books");
+    notify();
   };
   if (isLoading) {
     return <p>Loading.....</p>;
-    alert("Something went is wrong!");
   }
 
   return (
@@ -182,7 +185,7 @@ export const UpdateBook = () => {
             />
 
             <DialogFooter className="pt-4">
-              <Button type="submit" className="w-full" onClick={notify}>
+              <Button type="submit" className="w-full">
                 Update Book
               </Button>
             </DialogFooter>

@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { useForm, type SubmitHandler } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -25,7 +25,7 @@ export const AddBorrow = () => {
   const { bookId } = useParams();
   const navigate = useNavigate();
 
-  const form = useForm({
+  const form = useForm<TBorrow>({
     defaultValues: {
       book: bookId,
       quantity: 1,
@@ -45,7 +45,7 @@ export const AddBorrow = () => {
     }
   }, [data, bookId, isLoading, form]);
 
-  const onSubmit = async (data: TBorrow) => {
+  const onSubmit: SubmitHandler<TBorrow> = async (data: TBorrow) => {
     if (data.quantity === 0) {
       alert("the book is unavailable");
     }
@@ -100,7 +100,12 @@ export const AddBorrow = () => {
                 <FormItem>
                   <FormLabel>DueDate</FormLabel>
                   <FormControl>
-                    <Input type="date" placeholder="dueDate" {...field} />
+                    <Input
+                      type="date"
+                      placeholder="Due Date"
+                      value={field.value?.toISOString().split("T")[0]}
+                      onChange={(e) => field.onChange(new Date(e.target.value))}
+                    />
                   </FormControl>
                 </FormItem>
               )}
