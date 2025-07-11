@@ -30,7 +30,13 @@ export const AddBook = () => {
     defaultValues: {
       title: "",
       author: "",
-      genre: undefined,
+      genre:
+        "FICTION" |
+        "NON_FICTION" |
+        "SCIENCE" |
+        "HISTORY" |
+        "BIOGRAPHY" |
+        "FANTASY",
       isbn: "",
       description: "",
       copies: 1,
